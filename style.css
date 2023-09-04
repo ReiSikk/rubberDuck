@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+header h1 {
+    text-align: center;
+}
+header {
+    background: #2B2D42;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #f1f1f1;
+}
+body {
+    background: #FAF0CA;
+    font-family: 'Open Sans', sans-serif;
+}
+img {
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+    transition: all 0.8s ease;
+}
+form {
+    width: 60%;
+}
+.greeting {
+    background-color: #FF8C42;
+    padding: 1rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    width: 33%;
+    max-height: 100px;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.duck {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 1rem;
+}
+#name {
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    height: max-content;
+    align-self: flex-start;
+}
+main {
+    padding: 4rem 3rem;
+}
+
+.submit, #force {
+    border-radius: 6px;
+    transition: all 0.2s ease;padding: 1rem 1.5rem;
+    background: #132134;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    min-width: 150px;
+    max-width: 300px;
+}
+.submit:hover {
+    transform: matrix(1.05, 0, 0, 1.05, 0, 0);
+    cursor: pointer;
+}
+button:active {
+    transform: scale(0.9);
+}
+.button-wrap {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.inserted-message {
+    background-color: #132134;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.button-wrap {
+    padding: 2rem 0;
+}
+.delete-btn {
+    background: yellow;
+    
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+#message {
+    padding: 1rem;
+}
+.messages-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
