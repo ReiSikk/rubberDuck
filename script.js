@@ -115,11 +115,7 @@ async function saveToFirebase(message) {
 
 
 function deleteButton() {
-        console.log("delete message")
-    const messageCont = document.querySelector(".messages");
-        const deleteBtn = document.querySelector(".delete-btn");
-        const messageWrapper = document.querySelector(".message-wrapper");
-        const messageElement = document.querySelector(".inserted-message");
+        const messageCont = document.querySelector(".messages");
         //remove the messagewrapper from the dom
         messageCont.removeChild(messageCont.lastChild);;
 }
@@ -215,3 +211,53 @@ window.addEventListener("load", async () => {
     }
     )
 })
+
+const imageToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (e) => reject(e);
+  });
+
+  function base64ToImage(base64) {
+    var image = new Image();
+    image.src = base64;
+    return image
+  }
+
+//working with image upload
+const imageInput = document.querySelector("#image-upload");
+const saveImage = document.querySelector("#save-image");
+
+//TODO: add event listener to the image input and save to firebase
+saveImage.addEventListener("click", async () => { 
+const test = imageInput.files[0]
+console.log(test, "test")
+const base64 = await imageToBase64(test);
+console.log(base64, "base64")
+
+const response = await fetch("https://web-1st-semester-default-rtdb.europe-west1.firebasedatabase.app/images/cph-rs245.json", {
+    method:"POST",
+}
+);
+const body = await response.json();
+console.log(body, "body");
+
+
+});
+
+
+// append images to dom
+window.addEventListener("load", async () => {
+    const response = await fetch ("https://web-1st-semester-default-rtdb.europe-west1.firebasedatabase.app/images/cph-rs245.json");
+    const body = await response.json();
+    console.log(body, "body");
+    //turns the response object into an array
+  /*   const value = Object.value(body)[0];
+    console.log(value, "values"); */
+    const imageElement = base64ToImage(body);
+    document.querySelector(".image-cont").append(imageElement);
+})
+
+
