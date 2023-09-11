@@ -3,25 +3,59 @@ document.querySelector("#name").addEventListener("change", handleGreeting)
 const nameInput = document.querySelector("#name");
 const submitBtn = document.querySelector(".submit");
 const forceBtn = document.querySelector("#force");
+const sendForm = document.querySelector("#send-form");
+const inputValue = document.querySelector("#message").value;
+const messageCont = document.querySelector(".messages");
+const now = new Date();
+
 let messagesArray = []
 
 
-function handleClick(event) {
-const now = new Date();
-    console.log("click");
+
+
+ async function handleClick(event) {
     event.preventDefault();
-    const messageCont = document.querySelector(".messages");
+
+            // send to firebase backend 
+            const timestamp = formatDate();
+        
+            const obj = {
+                inputValue,
+                timestamp
+            };
+        
+            const response = await saveToFirebase(obj);
+        
+            if(response.status > 499) {
+                alert("Something went wrong. Server not working");
+              } else if ( response.status > 399) {
+                alert("Something went wrong. Please try again.");
+              } else {
+                const body = await response.json();
+                console.log(body, "body");
+              }
+
+
     const messagesWrapper = document.createElement("div");
     messagesWrapper.classList.add("message-wrapper");
+    //create delete button and append to created div
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
     deleteBtn.innerHTML = "Delete";
     deleteBtn.addEventListener("click", deleteButton);
+
+    //create p element and append to created div
     const messageElement = document.createElement("p");
     messageElement.classList.add("inserted-message");
     messageElement.title = formatDate();
     messageElement.innerHTML = document.querySelector("#message").value;
     let messageText = document.querySelector("#message").value;
+
+
+
+
+
+
     if(messageElement.innerHTML === "") {
         alert("Please enter a message");
         return;
@@ -31,19 +65,52 @@ const now = new Date();
     
     }
 
-    console.log("Messages array:", messagesArray);
-    console.log(messageElement);
+
+
     //add to dom 
     messagesWrapper.appendChild(messageElement);
     messageElement.appendChild(deleteBtn);
     messageCont.appendChild(messagesWrapper);
     const currrentDiv = document.querySelector(".messages");
-    console.log(currrentDiv, "current div")
-
     //call date fomrat 
-    console.log(now, "now");
     formatDate(now);
+    console.log(now, "now");
  
+}
+async function saveToFirebase(message) {
+    const response = await fetch(
+      "https://web-1st-semester-default-rtdb.europe-west1.firebasedatabase.app/mr-duck/cph-rs245.json",
+      {
+        method: "POST",
+        body: JSON.stringify(message),
+      }
+    );
+    console.log(response);
+    return response;
+  }
+
+  async function getFromFirebase() {
+    const response = await fetch(
+        "https://web-1st-semester-default-rtdb.europe-west1.firebasedatabase.app/mr-duck/cph-rs245.json"
+        );
+
+        const body = await response.json();
+        console.log(body, "body");
+        const toArray = Object.values(body);
+        console.log(toArray, "messages");
+        return toArray;
+    }
+
+  sendForm.addEventListener("submit", handleClick);
+
+  function toHtmlElements(inputs) {
+  //TODO: Transform array of objects to and array of HTML elements
+    inputs.map((input) => {
+        const p = document.createElement("p");
+        p.innerText = input.inputValue;
+        p.title = input.timestamp;
+
+    })
 }
 
 
@@ -75,7 +142,7 @@ if (myName) {
 
 }
 
-function formatDate(date) {
+function formatDate() {
     const now = new Date();
 
     const toReturn = now.toLocaleString('en-GB', {
@@ -90,12 +157,7 @@ function formatDate(date) {
   
     return toReturn
   }
-/* 
-  function displayDate(formattedDate) {
-    console.log("display date", formattedDate)
-    time.innerText = formattedDate;
-   
-  } */
+
   
 
 async function forceMessage() {
@@ -141,4 +203,15 @@ if (jokeElement) {
 
 
 }
+
 forceBtn.addEventListener("click", forceMessage);
+
+window.addEventListener("load", async () => {
+    const array = await getFromFirebase();
+    const elements = toHtmlElements(array);
+    console.log(elements, "elements");
+    elements.forEach((element) => {
+        messageCont.appendChild(element);
+    }
+    )
+})
