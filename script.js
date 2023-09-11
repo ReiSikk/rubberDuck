@@ -239,11 +239,11 @@ console.log(base64, "base64")
 
 const response = await fetch("https://web-1st-semester-default-rtdb.europe-west1.firebasedatabase.app/images/cph-rs245.json", {
     method:"POST",
+    body: JSON.stringify(base64)
 }
 );
 const body = await response.json();
 console.log(body, "body");
-
 
 });
 
@@ -254,9 +254,9 @@ window.addEventListener("load", async () => {
     const body = await response.json();
     console.log(body, "body");
     //turns the response object into an array
-  /*   const value = Object.value(body)[0];
-    console.log(value, "values"); */
-    const imageElement = base64ToImage(body);
+    const value = Object.values(body)[0];
+    console.log(value, "values");
+    const imageElement = base64ToImage(value);
     document.querySelector(".image-cont").append(imageElement);
 })
 
