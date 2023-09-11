@@ -18,9 +18,9 @@ let messagesArray = []
 
             // send to firebase backend 
             const timestamp = formatDate();
-        
+
             const obj = {
-                inputValue,
+                message: message.value,
                 timestamp
             };
         
